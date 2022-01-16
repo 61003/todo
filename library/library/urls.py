@@ -27,3 +27,12 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
 ]
+
+# router = DefaultRouter()
+# router.register('authors', views.AuthorViewSet)
+#
+# urlpatterns = [
+#    path('admin/', admin.site.urls),
+#    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+#    path('', include(router.urls)),
+# ]
