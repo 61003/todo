@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'authors',
     'rest_framework',
     'corsheaders',
-
 ]
 
 MIDDLEWARE = [
