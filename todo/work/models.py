@@ -2,6 +2,7 @@ from django.db import models
 from users.models import User
 from datetime import datetime
 
+
 class Project(models.Model):
    name = models.CharField(max_length=128)
    repo_url = models.CharField(max_length=512)
