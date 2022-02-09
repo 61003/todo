@@ -1,7 +1,7 @@
 import React from 'react'
+import {HashRouter, BrowserRouter, Route, Routes, Link, Switch, Redirect} from 'react-router-dom'
 
-
-const TodoItem = ({todo}) => {
+const TodoItem = ({todo, deleteTodo}) => {
    return (
        <tr>
            <td>
@@ -19,13 +19,15 @@ const TodoItem = ({todo}) => {
            <td>
                {todo.user}
            </td>
+           <td><button onClick={()=>deleteTodo(todo.id)} type='button'>Delete</button></td>
        </tr>
    )
 }
 
 
-const TodoList = ({todo}) => {
+const TodoList = ({todo, deleteTodo}) => {
    return (
+   <div>
        <table>
            <th>
                ToDo text
@@ -42,8 +44,10 @@ const TodoList = ({todo}) => {
            <th>
                User
            </th>
-           {todo.map((todo) => <TodoItem todo={todo} />)}
+           {todo.map((todo) => <TodoItem todo={todo} deleteTodo={deleteTodo} />)}
        </table>
+       <Link to='/todo/create'>Create</Link>
+   </div>
    )
 }
 
