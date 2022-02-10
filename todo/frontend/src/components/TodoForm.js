@@ -4,7 +4,8 @@ import React from 'react'
 class TodoForm extends React.Component {
     constructor(props) {
       super(props)
-      this.state = {text: '', create_date: '', update_date: '', is_active: '', project: props.projects[0]?.id, user: props.users[0]?.uuid}
+      this.state = {text: '', create_date: '', update_date: '', is_active: '', project: props.projects[0]?.id, user: props.users[0]?.uuid
+      }
 
     }
 
@@ -19,7 +20,7 @@ class TodoForm extends React.Component {
     }
 
     handleSubmit(event) {
-      this.props.createTodo(this.state.text, this.state.create_date, this.update_date.user, this.is_active, this.project, this.user)
+      this.props.createTodo(this.state.text, this.state.create_date, this.state.update_date, this.state.is_active, this.state.project, this.state.user)
       event.preventDefault()
     }
 
@@ -44,7 +45,7 @@ class TodoForm extends React.Component {
 
             <div className="form-group">
             <label htmlFor="is_active">is_active</label>
-                <input type="text" className="form-control" name="is_active" value={this.state.is_active} onChange={(event)=>this.handleChange(event)} />
+                <input type="number" className="form-control" name="is_active" value={this.state.is_active} onChange={(event)=>this.handleChange(event)} />
             </div>
 
             <div className="form-group">
@@ -60,7 +61,6 @@ class TodoForm extends React.Component {
             <select name="user" className='form-control' onChange={(event)=>this.handleChange(event)}>
                 {this.props.users.map((user)=><option value={user.uuid}>{user.username}</option>)}
             </select>
-
             </div>
 
 

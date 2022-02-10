@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import UserList from './components/User.js'
 import ProjectList from './components/Project.js'
-import TodoForm from './components/TodoForm.js'
 import TodoList from './components/Todo.js'
 import LoginForm from './components/Auth.js'
 import AppMenu from './components/Menu.js'
@@ -11,6 +10,8 @@ import AppFooter from './components/Footer.js'
 import axios from 'axios'
 import {HashRouter, BrowserRouter, Route, Routes, Link, Switch, Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie';
+import TodoForm from './components/TodoForm.js'
+
 
 
 const NotFound404 = ({ location }) => {
@@ -76,6 +77,7 @@ class App extends React.Component {
 
   deleteProject(id) {
     const headers = this.get_headers()
+
     axios.delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
         .then(response => {
           this.setState({projects: this.state.projects.filter((project)=>project.id !== id)})
@@ -91,10 +93,9 @@ class App extends React.Component {
   }
 
   createTodo(text, create_date, update_date, is_active, project, user) {
-    console.log(text)
     const headers = this.get_headers()
-    const data = {text: text, create_date: create_date, update_date: update_date, is_active:is_active, project:project}
-    axios.post('http://127.0.0.1:8000/api/doto/', data, {headers, headers})
+    const datax = {text: text, create_date: create_date, update_date: update_date, is_active: is_active, project: project, user: user}
+    axios.post('http://127.0.0.1:8000/api/doto/', datax, {headers})
         .then(response => {
           let new_todo = response.data
           const project = this.state.projects.filter((project) => project.id === new_todo.project)[0]
