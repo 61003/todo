@@ -10,6 +10,8 @@ import AppFooter from './components/Footer.js'
 import axios from 'axios'
 import {HashRouter, BrowserRouter, Route, Routes, Link, Switch, Redirect} from 'react-router-dom'
 import Cookies from 'universal-cookie';
+import TodoForm from './components/TodoForm.js'
+
 
 
 const NotFound404 = ({ location }) => {
@@ -19,6 +21,7 @@ const NotFound404 = ({ location }) => {
     </div>
   )
 }
+
 
 class App extends React.Component {
 
@@ -31,6 +34,8 @@ class App extends React.Component {
            'token': ''
        }
    }
+
+
 
   set_token(token) {
     const cookies = new Cookies()
@@ -69,6 +74,41 @@ class App extends React.Component {
     }
     return headers
   }
+
+  deleteProject(id) {
+    const headers = this.get_headers()
+
+    axios.delete(`http://127.0.0.1:8000/api/projects/${id}`, {headers})
+        .then(response => {
+          this.setState({projects: this.state.projects.filter((project)=>project.id !== id)})
+        }).catch(error => console.log(error))
+  }
+
+  deleteTodo(id) {
+    const headers = this.get_headers()
+    axios.delete(`http://127.0.0.1:8000/api/doto/${id}`, {headers})
+        .then(response => {
+          this.setState({todo: this.state.todo.filter((todo)=>todo.id !== id)})
+        }).catch(error => console.log(error))
+  }
+
+  createTodo(text, create_date, update_date, is_active, project, user) {
+    const headers = this.get_headers()
+    const datax = {text: text, create_date: create_date, update_date: update_date, is_active: is_active, project: project, user: user}
+    axios.post('http://127.0.0.1:8000/api/doto/', datax, {headers})
+        .then(response => {
+          let new_todo = response.data
+          const project = this.state.projects.filter((project) => project.id === new_todo.project)[0]
+          new_todo.project = project
+          this.setState({projects: [...this.state.projects, new_todo]})
+          const user = this.state.users.filter((user) => user.uuid === new_todo.user)[0]
+          new_todo.user = user
+          this.setState({users: [...this.state.users, new_todo]})
+        }).catch(error => console.log(error))
+
+
+  }
+
 
   load_data() {
 
@@ -128,8 +168,9 @@ class App extends React.Component {
             </nav>
                <Routes>
                <Route exact path='/users' element={<UserList users={this.state.users} />}  />
-               <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />}  />
-               <Route exact path='/todo' element={<TodoList todo={this.state.todo} />} />
+               <Route exact path='/projects' element={<ProjectList projects={this.state.projects} deleteProject={(id)=>this.deleteProject(id)} />}  />
+               <Route exact path='/todo/create' element={<TodoForm projects={this.state.projects} users={this.state.users} createTodo={(text, create_date, update_date, is_active, project, user) => this.createTodo(text, create_date, update_date, is_active, project, user)}/>}  />
+               <Route exact path='/todo' element={<TodoList todo={this.state.todo} deleteTodo={(id)=>this.deleteTodo(id)} />} />
                <Route exact path='/login' element={<LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                <Route component={NotFound404} />
 
